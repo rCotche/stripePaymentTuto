@@ -1,4 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+
 Future<void> createPaymentIntent({
+  required String name,
   required String address,
   required String pin,
   required String city,
@@ -6,4 +10,25 @@ Future<void> createPaymentIntent({
   required String country,
   required String currency,
   required String amount,
-}) async {}
+}) async {
+  //https://docs.stripe.com/api/payment_intents/create
+  final url = Uri.parse("https://api.stripe.com/v1/payment_intents");
+  final secretKey = dotenv.env["STRIPE_SECRET_KEY"]!;
+
+  //
+  final body = {
+    'amount': amount,
+    'currencey': currency.toLowerCase(),
+    'automatic_payment_methods[enabled]': 'true',
+    'description': 'Test donation',
+    'shipping[name]': name,
+    'shipping[address][line1]': address,
+    'shipping[address][postal_code]': pin,
+    'shipping[address][city]': city,
+    'shipping[address][state]': state,
+    'shipping[address][country]': country,
+  };
+
+  //
+  final response = await http.post(url);
+}
