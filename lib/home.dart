@@ -30,6 +30,19 @@ class _HomePageState extends State<HomePage> {
   final countryFormkey = GlobalKey<FormState>();
   final pincodeFormkey = GlobalKey<FormState>();
 
+  //Moi : vaut mieux utiliser un enum
+  //
+  List<String> currencyList = <String>[
+    'USD',
+    'INR',
+    'EUR',
+    'JPY',
+    'GBP',
+    'AED',
+  ];
+
+  String selectedCurrency = 'USD';
+
   @override
   void dispose() {
     amountController.dispose();
@@ -104,6 +117,48 @@ class _HomePageState extends State<HomePage> {
                         controller: amountController,
                         formkey: amountFormkey,
                       ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    DropdownMenu<String>(
+                      inputDecorationTheme: InputDecorationTheme(
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 20,
+                          horizontal: 0,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ),
+                      initialSelection: currencyList.first,
+                      onSelected: (String? value) {
+                        //this is called when the user select an item
+                        setState(() {
+                          selectedCurrency = value!;
+                        });
+                      },
+
+                      //currencyList : Il s'agit d'une liste contenant des chaînes de caractères
+                      //(par exemple, les noms de devises comme "USD", "EUR", etc.).
+                      //.map<DropdownMenuEntry<String>> : La méthode map applique une fonction à chaque élément
+                      //de currencyList et retourne un nouvel iterable de type DropdownMenuEntry<String>.
+
+                      //pour chaque element de currencylist il y a une fonction
+                      //DropdownMenuEntry<String> getUnDropdownMenuEntry (String value){return;}
+
+                      //((String value) {...}) : C'est une fonction anonyme (ou lambda)
+                      //qui prend en entrée une chaîne de caractères (value)
+                      //et retourne une instance de DropdownMenuEntry<String>.
+
+                      //.toList() : Convertit l'iterable résultant en une liste.
+                      dropdownMenuEntries: currencyList
+                          .map<DropdownMenuEntry<String>>((String value) {
+                        return DropdownMenuEntry<String>(
+                            value: value, label: value);
+                      }).toList(),
                     ),
                   ],
                 )
