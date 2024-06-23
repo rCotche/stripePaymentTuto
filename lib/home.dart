@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:stripe_payment_flutter/constant.dart';
 
 class HomePage extends StatefulWidget {
@@ -110,6 +109,8 @@ class _HomePageState extends State<HomePage> {
                       //le premier widget occupe 1/3 de l'espace disponible
                       //tandis que le second widget occupe 2/3 de l'espace disponible.
                       flex: 5,
+
+                      //Amount
                       child: ReusableTextField(
                         title: "Donation amount",
                         hint: "Any amount you like",
@@ -121,6 +122,8 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(
                       width: 10,
                     ),
+
+                    //DropdownMenu
                     DropdownMenu<String>(
                       inputDecorationTheme: InputDecorationTheme(
                         contentPadding: const EdgeInsets.symmetric(
@@ -161,7 +164,126 @@ class _HomePageState extends State<HomePage> {
                       }).toList(),
                     ),
                   ],
-                )
+                ),
+
+                //name
+                const SizedBox(
+                  height: 10,
+                ),
+                ReusableTextField(
+                  title: "Name",
+                  hint: "Ex: john doe",
+                  controller: nameController,
+                  formkey: nameFormkey,
+                ),
+
+                //address
+                const SizedBox(
+                  height: 10,
+                ),
+                ReusableTextField(
+                  title: "Address",
+                  hint: "Ex 123 main str",
+                  controller: addressController,
+                  formkey: addressFormkey,
+                ),
+
+                //city
+                const SizedBox(
+                  height: 10,
+                ),
+                ReusableTextField(
+                  title: "City",
+                  hint: "Ex New delhi",
+                  controller: cityController,
+                  formkey: cityFormkey,
+                ),
+
+                //address
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: ReusableTextField(
+                        title: "Address",
+                        hint: "Ex 123 main str",
+                        controller: addressController,
+                        formkey: addressFormkey,
+                      ),
+                    ),
+
+                    //state
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: ReusableTextField(
+                        title: "State",
+                        hint: "Ex DL",
+                        controller: stateController,
+                        formkey: stateFormkey,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+
+                      //country
+                      child: ReusableTextField(
+                        title: "Country",
+                        hint: "Ex In for India",
+                        controller: countryController,
+                        formkey: countryFormkey,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      flex: 5,
+
+                      //pincode
+                      child: ReusableTextField(
+                        title: "Pin code",
+                        hint: "Ex 12345",
+                        controller: pincodeController,
+                        formkey: pincodeFormkey,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+
+                  //button
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent.shade400,
+                    ),
+                    onPressed: () async {},
+                    child: const Text(
+                      "Proceed to pay",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           )

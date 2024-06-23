@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stripe_payment_flutter/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized;
+
+  //load the env file
+  await dotenv.load(fileName: ".env");
+
+  //
+  Stripe.publishableKey = dotenv.env["STRIPE_PUBLIC_KEY"]!;
+  await Stripe.instance.applySettings();
+
+  //
   runApp(const MyApp());
 }
 
