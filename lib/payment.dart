@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,5 +33,19 @@ Future<void> createPaymentIntent({
   };
 
   //
-  final response = await http.post(url);
+  final response = await http.post(
+    url,
+    headers: {
+      "Authorization": "Bearer $secretKey",
+      "Content-type": "application/x-www-form-urlencoded"
+    },
+    body: body,
+  );
+  if (response.statusCode == 200) {
+    var json = jsonDecode(response.body);
+    debugPrint(json);
+    return json;
+  } else {
+    debugPrint("error payment intent");
+  }
 }

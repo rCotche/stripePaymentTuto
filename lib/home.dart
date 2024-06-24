@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stripe_payment_flutter/constant.dart';
+import 'package:stripe_payment_flutter/payment.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -41,6 +43,57 @@ class _HomePageState extends State<HomePage> {
   ];
 
   String selectedCurrency = 'USD';
+
+  //https://docs.page/flutter-stripe/flutter_stripe/sheet
+  Future<void> initPaymentSheet() async {
+    try {
+      // 1. create payment intent on the server
+      //final data = await _createTestPaymentSheet();
+
+      //// 1. create payment intent on the client side by calling stripe api
+      final data = await createPaymentIntent(
+        name: nameController.text,
+        address: addressController.text,
+        pin: pincodeController.text,
+        city: cityController.text,
+        state: stateController.text,
+        country: countryController.text,
+        currency: selectedCurrency,
+        amount: amountController.text,
+      );
+
+      // 2. initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          // Set to true for custom flow
+          customFlow: false,
+          // Main params
+          merchantDisplayName: 'Test merchant',
+          paymentIntentClientSecret: data['client_secret'],
+          // Customer keys
+          customerEphemeralKeySecret: data['ephemeralKey'],
+          customerId: data['id'],
+          // Extra options
+          // applePay: const PaymentSheetApplePay(
+          //   merchantCountryCode: 'US',
+          // ),
+          // googlePay: const PaymentSheetGooglePay(
+          //   merchantCountryCode: 'US',
+          //   testEnv: true,
+          // ),
+          style: ThemeMode.dark,
+        ),
+      );
+      // setState(() {
+      //   _ready = true;
+      // });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+      rethrow;
+    }
+  }
 
   @override
   void dispose() {
@@ -276,7 +329,18 @@ class _HomePageState extends State<HomePage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent.shade400,
                       ),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        //mettre dans une fonction
+                        //pour le moment il y a pas de validation
+
+                        if (amountFormkey.currentState!.validate() &&
+                            nameFormkey.currentState!.validate() &&
+                            addressFormkey.currentState!.validate() &&
+                            cityFormkey.currentState!.validate() &&
+                            stateFormkey.currentState!.validate() &&
+                            countryFormkey.currentState!.validate() &&
+                            pincodeFormkey.currentState!.validate()) {}
+                      },
                       child: const Text(
                         "Proceed to pay",
                         style: TextStyle(
