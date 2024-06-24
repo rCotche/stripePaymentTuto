@@ -339,7 +339,23 @@ class _HomePageState extends State<HomePage> {
                             cityFormkey.currentState!.validate() &&
                             stateFormkey.currentState!.validate() &&
                             countryFormkey.currentState!.validate() &&
-                            pincodeFormkey.currentState!.validate()) {}
+                            pincodeFormkey.currentState!.validate()) {
+                          await initPaymentSheet();
+                          try {
+                            //
+                            await Stripe.instance.presentPaymentSheet();
+
+                            //
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "",
+                                  style: TextStyle(),
+                                ),
+                              ),
+                            );
+                          } catch (e) {}
+                        }
                       },
                       child: const Text(
                         "Proceed to pay",
