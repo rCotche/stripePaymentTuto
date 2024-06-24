@@ -31,6 +31,7 @@ class _ReusableTextFieldState extends State<ReusableTextField> {
           hintText: widget.hint,
         ),
         validator: (value) => value!.isEmpty ? "Cannot be empty" : null,
+        controller: widget.controller,
       ),
     );
   }
