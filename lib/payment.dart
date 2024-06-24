@@ -4,7 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-Future<void> createPaymentIntent({
+//je ne doit pas mettre le type void car
+//dans la fonction qd on set les valeur pour :
+//paymentIntentClientSecret; customerEphemeralKeySecret; customerId
+//This expression has a type of 'void' so its value can't be used.Try checking to see if you're using the correct API stripe
+Future createPaymentIntent({
   required String name,
   required String address,
   required String pin,
@@ -21,7 +25,7 @@ Future<void> createPaymentIntent({
   //
   final body = {
     'amount': amount,
-    'currencey': currency.toLowerCase(),
+    'currency': currency.toLowerCase(),
     'automatic_payment_methods[enabled]': 'true',
     'description': 'Test donation',
     'shipping[name]': name,
@@ -37,15 +41,17 @@ Future<void> createPaymentIntent({
     url,
     headers: {
       "Authorization": "Bearer $secretKey",
-      "Content-type": "application/x-www-form-urlencoded"
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: body,
   );
   if (response.statusCode == 200) {
     var json = jsonDecode(response.body);
-    debugPrint(json);
+    // debugPrint(response.body);
+    // debugPrint(json);//peut pas print un map strin
+    ////genre coomme en php on peut print un tableau
     return json;
   } else {
-    debugPrint("error payment intent");
+    debugPrint("error payment intent : ${response.body}");
   }
 }
